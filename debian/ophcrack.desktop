@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Ophcrack
+Comment=Microsoft Windows password cracker
+Exec=ophcrack
+Icon=ophcrack
+Terminal=false
+Type=Application
+Categories=System;Security;GTK;
+Keywords=Hacking; Security; Windows;
+StartupNotify=true
+Comment[fr]=Casseur de mot de passe Microsoft Windows

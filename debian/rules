@@ -1,0 +1,45 @@
+#!/usr/bin/make -f
+#export DH_VERBOSE=1
+
+DEB_HOST_GNU_TYPE   := $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+DEB_BUILD_GNU_TYPE  := $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+
+BASE_CONFIGURE_FLAGS := --host=$(DEB_HOST_GNU_TYPE) \
+                        --build=$(DEB_BUILD_GNU_TYPE) \
+                        --prefix=/usr
+
+BUILDDIR_QT4 := $(CURDIR)/debian/tmpdir/qt4
+BUILDDIR_CLI := $(CURDIR)/debian/tmpdir/cli
+DESTDIR_QT4  := $(CURDIR)/debian/ophcrack
+DESTDIR_CLI  := $(CURDIR)/debian/ophcrack-cli
+
+%:
+	dh $@ --with autoreconf
+
+override_dh_auto_configure:
+	mkdir -p $(BUILDDIR_QT4)
+	mkdir -p $(BUILDDIR_CLI)
+	cp -a `ls -d $(CURDIR)/* | grep -v '/debian$$'` $(BUILDDIR_QT4)
+	cp -a `ls -d $(CURDIR)/* | grep -v '/debian$$'` $(BUILDDIR_CLI)
+	cd $(BUILDDIR_QT4); \
+	./configure $(BASE_CONFIGURE_FLAGS) --enable-gui --enable-graph
+	cd $(BUILDDIR_CLI); \
+	./configure $(BASE_CONFIGURE_FLAGS) --disable-gui --disable-graph
+
+override_dh_auto_build:
+	$(MAKE) -C $(BUILDDIR_QT4)
+	$(MAKE) -C $(BUILDDIR_CLI)
+
+override_dh_auto_install:
+	mkdir -p $(DESTDIR_QT4)/usr/share/pixmaps
+	install -D -m 755 $(BUILDDIR_CLI)/src/ophcrack $(DESTDIR_CLI)/usr/bin/ophcrack-cli
+	install -D -m 755 $(BUILDDIR_QT4)/src/ophcrack $(DESTDIR_QT4)/usr/bin/ophcrack
+	cp $(CURDIR)/src/gui/pixmaps/os.xpm \
+		$(DESTDIR_QT4)/usr/share/pixmaps/ophcrack.xpm || exit 1;
+
+override_dh_installchangelogs:
+	dh_installchangelogs ChangeLog
+
+override_dh_clean:
+	dh_clean
+	rm -rf $(CURDIR)/debian/tmpdir

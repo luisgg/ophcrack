@@ -1,0 +1,160 @@
+ophcrack (3.6.0-1) unstable; urgency=low
+
+  * New upstream release.
+  * debian/patches
+    + Remove 00_validate_sysinfo.diff patch.
+      + Merge with upstream.
+    + Remove 01_fix_spelling_error.diff patch.
+      + Merge with upstream.
+  * Update desktop file.
+    + Remove extension from icon name.
+    + Add keywords field.
+  * Extend debian copyright years.
+
+ -- Daniel Echeverry <epsilon77@gmail.com>  Sat, 08 Jun 2013 09:50:42 -0500
+
+ophcrack (3.5.0-1) unstable; urgency=low
+
+  * New upstream release.
+  * Refresh all patches.
+  * Add libexpat-dev to B-D.
+
+ -- Julián Moreno Patiño <julian@debian.org>  Mon, 13 May 2013 11:22:54 -0500
+
+ophcrack (3.4.1-1) unstable; urgency=low
+
+  * New upstream release.
+    + Repack upstream tarball without prebuilt
+      ELF object.
+  * Extend debian copyright years.
+  * Update my email.
+  * Bump Standards-Version to 3.9.4. (no changes)
+
+ -- Julián Moreno Patiño <julian@debian.org>  Wed, 01 May 2013 21:00:22 -0500
+
+ophcrack (3.4.0-2) unstable; urgency=low
+
+  * Add missing copyright.
+  * Add ophcrack.install to install
+    ophcrack.desktop file.
+  * Update patch to detect properly sysinfo
+    structure.
+
+ -- Julián Moreno Patiño <darkjunix@gmail.com>  Thu, 14 Jun 2012 21:59:45 -0500
+
+ophcrack (3.4.0-1) unstable; urgency=low
+
+  * New maintainer. Closes: #673947
+  * New upstream release.
+  * Switch to dpkg-source 3.0 (quilt) format
+  * debian/control
+    + Set myself as Maintainer.
+    + Set Julian Moreno Patiño as Uploader.
+    + Changed debhelper to 9 in B-D.
+    + Improve description.
+    + Bump Standards-Version 3.9.3.
+      + Update to DEP5 copyright format 1.0
+    + Add autoconf, automake, libtool in B-D
+    + Remove imagemagick in B-D
+  * debian/compat
+    + Switch compat level 5 to 9
+  * debian/patches
+    + Add 01_fix_spelling_error.diff patch 
+      + Fix spelling error
+
+  [Julian Moreno Patiño]
+  * debian/control
+    + Add dh-autoreconf in B-D
+  * debian/patches
+    + Add 00_validate_sysinfo.diff patch
+      + Fix FTBFS in GNU Debian KfreeBSD. 
+         + Thanks to Petr Salinger for the patch
+  * debian/rules
+    + Use tiny rules
+      + Remove bashism in debian/rules. Closes: #535413
+    + Remove the usage of /usr/share/misc/config.{sub,guess}
+    + Remove validation of CFLAGS to use debhelper compat level instead
+    + Remove install multiples icons
+
+ -- Daniel Echeverry <epsilon77@gmail.com>  Wed, 23 May 2012 22:09:42 -0500
+
+ophcrack (3.3.0-1) unstable; urgency=low
+
+  * New upstream release.
+  * Bump Standards-Version.
+  * Remove dh_desktop call (replaced by trigger).
+
+ -- Adam Cécile (Le_Vert) <gandalf@le-vert.net>  Wed, 01 Jul 2009 20:06:56 +0200
+
+ophcrack (3.2.1-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Adam Cécile (Le_Vert) <gandalf@le-vert.net>  Thu, 30 Apr 2009 20:36:20 +0200
+
+ophcrack (3.2.0-1) unstable; urgency=low
+
+  * New upstream release.
+  * Bump Standards-Version.
+  * Enable new graph feature (add libqwt5-qt4-dev b-dep).
+  * Update debian/copyright.
+  * Update manpage.
+
+ -- Adam Cécile (Le_Vert) <gandalf@le-vert.net>  Mon, 30 Mar 2009 21:42:46 +0200
+
+ophcrack (3.1.0-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Adam Cécile (Le_Vert) <gandalf@le-vert.net>  Fri, 19 Dec 2008 21:39:52 +0100
+
+ophcrack (3.0.1-1) experimental; urgency=low
+
+  * Upload to experimental because of lenny freeze.
+  * New upstream release.
+  * Update debian/watch.
+  * Switch from libgtk2.0-dev to libqt4-dev b-dep.
+  * Drop dpatch, not needed anymore.
+  * Add new package ophcrack-cli that provides command-line binary.
+  * Rewrite whole debian/rules to build qt4 and cli flavours.
+  * Update README.Debian with new tables names/urls.
+  * Do not depend anymore on bkhive/samdump2, both are embedded.
+  * Update debian/copyright.
+  * Add imagemagick b-dep to create icons.
+  * Write a new manpage for the new command line switches.
+
+ -- Adam Cécile (Le_Vert) <gandalf@le-vert.net>  Mon, 11 Aug 2008 15:58:58 +0200
+
+ophcrack (2.4.1~debian-2) unstable; urgency=low
+
+  * Bump Standards-Version to 3.8.0.
+  * Move homepage to new dpkg standard field.
+  * Update desktop file with proper categories (Closes: #474158).
+  * Fix manpage (bad whatis entry).
+  * Move config.sub/config.guess updates to configure.
+
+ -- Adam Cécile (Le_Vert) <gandalf@le-vert.net>  Mon, 23 Jun 2008 22:32:10 +0200
+
+ophcrack (2.4.1~debian-1) unstable; urgency=low
+
+  * New upstream release.
+  * Update debian/menu and desktop file.
+
+ -- Adam Cécile (Le_Vert) <gandalf@le-vert.net>  Mon, 20 Aug 2007 14:05:16 +0200
+
+ophcrack (2.4~debian-1) unstable; urgency=low
+
+  * New upstream release (Closes: #431805).
+  * Drop recommends on ophcrack-tables (no time do create this package) (Closes: #431001).
+  * Drop some patch against callbacks.c (fixed upstream, no longer use a forked bkhive binary).
+  * Update debian/watch.
+  * Use [ ! -f Makefile ] || $(MAKE) distclean instead of -$(MAKE) distclean (fix lintian warning).
+
+ -- Adam Cécile (Le_Vert) <gandalf@le-vert.net>  Thu, 05 Jul 2007 14:55:35 +0200
+
+ophcrack (2.3.4~debian-1) unstable; urgency=low
+
+  * Initial release (Closes: #392906).
+  * Repack upstream sources to remove non-free "linux_tools" sub-directory.
+
+ -- Adam Cécile (Le_Vert) <gandalf@le-vert.net>  Wed,  4 Oct 2006 15:10:51 +0200

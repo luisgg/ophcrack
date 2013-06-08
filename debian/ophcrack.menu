@@ -1,0 +1,6 @@
+?package(ophcrack): needs="X11" \
+			   section="Applications/System/Security" \
+			   title="Ophcrack" \
+			   longtitle="Microsoft Windows password cracker" \
+			   command="/usr/bin/ophcrack" \
+			   icon="/usr/share/pixmaps/ophcrack.xpm"

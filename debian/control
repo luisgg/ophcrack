@@ -1,0 +1,36 @@
+Source: ophcrack
+Section: admin
+Priority: optional
+Maintainer: Daniel Echeverry <epsilon77@gmail.com>
+Uploaders: Julián Moreno Patiño <julian@debian.org>
+Build-Depends: debhelper (>= 9), pkg-config, libexpat-dev, libssl-dev, libqt4-dev, libqwt5-qt4-dev, dh-autoreconf
+Standards-Version: 3.9.4
+Homepage: http://ophcrack.sourceforge.net/
+
+Package: ophcrack
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Microsoft Windows password cracker using rainbow tables (gui)
+ Ophcrack is a Windows password cracker based on a time-memory trade-off
+ using rainbow tables. This is a new variant of Hellman's original trade-off,
+ with better performance. It recovers 99.9% of alphanumeric passwords in
+ seconds.
+ .
+ It works for Windows NT/2000/XP/Vista/7.
+ .
+ This package contains ophcrack with QT4 based graphical UI.
+ Please note that it can be used in command line as well.
+
+Package: ophcrack-cli
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Microsoft Windows password cracker using rainbow tables (cmdline)
+ Ophcrack is a Windows password cracker based on a time-memory trade-off
+ using rainbow tables. This is a new variant of Hellman's original trade-off,
+ with better performance. It recovers 99.9% of alphanumeric passwords in
+ seconds.
+ .
+ It works for Windows NT/2000/XP/Vista/7.
+ .
+ This package contains ophcrack with command line interface only.
+

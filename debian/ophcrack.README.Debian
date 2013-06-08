@@ -1,0 +1,16 @@
+ophcrack for Debian
+-------------------
+
+Ophcrack needs rainbow tables to crack password.
+
+The upstream author distribute freely some rainbow tables:
+  * XP free small (380MB)
+    Charset: 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
+  * XP free fast (703MB)
+    Charset: 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
+  * Vista free (461MB)
+    Charset: based on a dictionary with variations (hybrid mode)
+
+You can grab them from http://ophcrack.sourceforge.net/tables.php
+
+ -- Adam Cécile (Le_Vert) <gandalf@le-vert.net>  Mon, 11 Aug 2008 15:58:58 +0200
