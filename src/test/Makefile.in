@@ -1,0 +1,13 @@
+CC = @CC@
+CFLAGS = @CFLAGS@ -I../.. -I../ntproba
+LDFLAGS = @LDFLAGS@ @LIBS@
+
+all: alltests
+
+alltests: alltests.o ../libophcrack.a ../samdump2/libsamdump2.a
+	$(CC) $^ -o $@ $(LDFLAGS)
+
+depend:
+	$(CC) $(CFLAGS) -MM *.c >.depend
+
+include .depend

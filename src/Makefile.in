@@ -1,0 +1,114 @@
+# Copyright (C) 2008, Bertrand Mesot <http://www.objectif-securite.ch>
+#	 	2008, Cedric Tissieres <http://www.objectif-securite.ch>
+# 
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-13, USA
+
+
+# General variables
+SHELL = /bin/sh
+VPATH = @srcdir@
+
+top_srcdir = @top_srcdir@
+srcdir = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+bindir = $(exec_prefix)/bin
+infodir = $(prefix)/info
+libdir = $(prefix)/lib/gnudl
+mandir = $(prefix)/man/man1
+
+CC = @CC@
+LIBS = @LIBS@
+INSTALL = @INSTALL@
+RANLIB = @RANLIB@
+
+CFLAGS  = @CFLAGS@ -I$(srcdir)/samdump2 -I$(srcdir)/ntproba
+LDFLAGS = @LDFLAGS@ @LIBS@
+
+
+@HAVE_GUI_TRUE@all: libophcrack.a
+@HAVE_GUI_FALSE@all: ophcrack
+
+libophcrack.a: list.o misc.o scheduler.o table.o hash.o ophstat.o ophel.o \
+	original.o ophtask.o message.o lmtable.o lmgerman.o ntextended.o arg.o \
+	ophcrack.o ntdict.o fsm.o ntnine.o nteight.o ntnum.o ntseven.o lmflash.o \
+	nteightxl.o ntspecialxl.o ntproba.o ntproba/ioMarkov.o \
+	ntproba/markov.o ntproba/pattern.o ntproba/aliasMarkov.o \
+	ntproba/aliasPattern.o ntproba/ioPattern.o ntproba/hashToPwd.o \
+	ntproba/proba_info.o
+	ar r $@ $^
+	$(RANLIB) $@
+
+ophcrack: main.o libophcrack.a samdump2/libsamdump2.a
+	$(CC) $^ -o $@ $(LDFLAGS)
+
+# Install target
+install: all
+	@echo "Creating directories..."
+	$(INSTALL) -d $(DESTDIR)$(bindir)
+#	$(INSTALL) -d $(DESTDIR)$(mandir)
+	@echo "Copying binary..."
+	$(INSTALL) ophcrack $(DESTDIR)$(bindir)
+#	@echo "Installing man page..."
+#	$(INSTALL) ophcrack.1 $(DESTDIR)$(MANDIR)
+	@echo ""
+
+# Uninstall target
+uninstall: 
+	@echo "Deleting binary and manpages..."
+	rm -f $(DESTDIR)$(bindir)/ophcrack
+#	rm -f $(DESTDIR)$(mandir)/ophcrack.1
+	@echo ""
+
+clean:
+	rm -f *.o *~
+	rm -f ophcrack
+	rm -f libophcrack.a
+
+distclean: clean
+	rm -f Makefile
+
+list.o: list.h list.c
+misc.o: misc.h misc.c
+table.o: table.h table.c misc.h ntproba/proba_info.h
+scheduler.o: list.h scheduler.h scheduler.c
+table.o: misc.h table.h table.c
+hash.o: misc.h table.h hash.h hash.c
+ophstat.o: ophstat.h ophstat.c
+ophel.o: ophstat.h ophel.h ophel.c
+ophtask.o: ophtask.h ophtask.c
+original.o: original.h original.c
+message.o: list.h ophtask.h message.h message.c
+lmtable.o: table.h hash.h ophel.h lmtable.h lmtable.c
+lmgerman.o: table.h hash.h ophel.h lmgerman.h lmgerman.c
+ntextended.o: table.h hash.h ophel.h ntextended.h ntextended.c
+ntnine.o: table.h hash.h ophel.h ntnine.h ntnine.c
+nteight.o: table.h hash.h ophel.h nteight.h nteight.c
+ntnum.o: table.h hash.h ophel.h ntnum.h ntnum.c
+ntseven.o: table.h hash.h ophel.h ntseven.h ntseven.c
+ntdict.o: table.h hash.h ophel.h ntdict.h ntdict.c
+lmflash.o: table.h hash.h ophel.h lmflash.h lmflash.c
+nteightxl.o: table.h hash.h ophel.h nteightxl.h nteightxl.c
+ntspecialxl.o: table.h hash.h ophel.h ntspecialxl.h ntspecialxl.c
+ntproba.o: table.h hash.h ophel.h ntproba.h ntproba.c ntproba/hashToPwd.h ntproba/proba_info.h ntproba/ioMarkov.h ntproba/ioPattern.h
+arg.o: arg.h arg.c
+fsm.o: fsm.h fsm.c
+ophcrack.o: misc.h list.h scheduler.h table.h hash.h lmtable.h ophel.h \
+	ophtask.h message.h original.h ophcrack.h ophcrack.c
+main.o: list.h table.h hash.h message.h ophcrack.h gui/main.cpp
+	cp gui/main.cpp main.c
+	$(CC) $(CFLAGS) -c -o $@ main.c
+	rm main.c
+

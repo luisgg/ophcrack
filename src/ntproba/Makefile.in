@@ -1,0 +1,56 @@
+# Copyright (C) 2008, Bertrand Mesot <http://www.objectif-securite.ch>
+#               2008, Cedric Tissieres <http://www.objectif-securite.ch>
+# 
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-13, USA
+
+
+# General variables
+SHELL = /bin/sh
+VPATH = @srcdir@
+
+top_srcdir = @top_srcdir@
+srcdir = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+bindir = $(exec_prefix)/bin
+infodir = $(prefix)/info
+libdir = $(prefix)/lib/gnudl
+mandir = $(prefix)/man/man1
+
+CC = @CC@
+LIBS = @LIBS@
+INSTALL = @INSTALL@
+RANLIB = @RANLIB@
+
+CFLAGS  = @CFLAGS@ -I$(srcdir)/.. -I$(srcdir)/../..
+LDFLAGS = @LDFLAGS@ @LIBS@ 
+
+all: ioMarkov.o markov.o pattern.o aliasMarkov.o aliasPattern.o\
+	 ioPattern.o hashToPwd.o proba_info.o
+
+clean:
+	rm -f *.o *~
+
+distclean: clean
+	rm -f Makefile
+
+ioMarkov.o: ioMarkov.c ioMarkov.h markov.h
+markov.o: markov.c markov.h aliasMarkovBuffer.h aliasMarkov.h
+pattern.o: pattern.c pattern.h patternDescriptor.h
+aliasMarkov.o: aliasMarkov.c aliasMarkov.h markov.h
+aliasPattern.o: aliasPattern.c aliasPattern.h pattern.h
+ioPattern.o: ioPattern.c ioPattern.h aliasPattern.h ioMarkov.h patternDescriptor.h
+hashToPwd.o: hashToPwd.c hashToPwd.h pattern.h markov.h aliasPattern.h patternDescriptor.h aliasMarkov.h
+proba_info.o: proba_info.c proba_info.h

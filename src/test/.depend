@@ -1,0 +1,5 @@
+alltests.o: alltests.c ../ophcrack.h ../misc.h ../../config.h ../bswap.h \
+ ../scheduler.h ../list.h ../table.h ../ntproba/proba_info.h \
+ ../ntproba/markov.h ../ntproba/aliasMarkovBuffer.h ../ntproba/pattern.h \
+ ../ntproba/aliasPattern.h ../hash.h ../ophtask.h ../ophel.h ../ophstat.h \
+ ../arg.h ../message.h ../lmtable.h ../ntproba.h

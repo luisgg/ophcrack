@@ -1,0 +1,17 @@
+CC      = gcc
+CFLAGS  = -g -Wall -pedantic -std=gnu9x -I ..
+LDFLAGS =
+
+all: libsamdump2.a
+
+libsamdump2.a: hive.o bkhive.o samdump2.o
+	ar r $@ $^
+
+clean:
+	rm -f *.o *~
+	rm -f libsamdump2.a
+
+
+hive.o: hive.h hive.c
+bkhive.o: bkhive.h bkhive.c
+samdump2.o: samdump2.h samdump2.c

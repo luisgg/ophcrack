@@ -1,0 +1,99 @@
+# Copyright (C) 2008, Bertrand Mesot <http://www.objectif-securite.ch>
+#	 	2008, Cedric Tissieres <http://www.objectif-securite.ch>
+# 
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-13, USA
+
+
+# General variables
+SHELL = /bin/sh
+VPATH = @srcdir@
+
+top_srcdir = @top_srcdir@
+srcdir = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+bindir = $(exec_prefix)/bin
+infodir = $(prefix)/info
+libdir = $(prefix)/lib/gnudl
+mandir = $(prefix)/man/man1
+
+CC = @CC@
+CFLAGS = @CFLAGS@
+LDFLAGS = @LDFLAGS@
+LIBS = @LIBS@
+INSTALL = @INSTALL@
+
+PACKAGE = @PACKAGE_NAME@
+VERSION = @PACKAGE_VERSION@
+distdir   = $(PACKAGE)-$(VERSION)
+DISTFILES = aclocal.m4 AUTHORS ChangeLog config/ config.h.in configure\
+	 configure.in COPYING doc/ INSTALL install-sh LICENSE\
+	 LICENSE.OpenSSL Makefile.in NEWS README config.sub config.guess src/
+
+subdirs = src/samdump2 src/ntproba src/
+@HAVE_GUI_TRUE@subdirs+= src/gui
+
+all:
+	@for dir in ${subdirs}; do \
+	  (cd $$dir && $(MAKE) all) \
+	  || case "$(MFLAGS)" in *k*) fail=yes;; *) exit 1;; esac; \
+	done && test -z "$$fail"
+
+doc: src
+	doxygen doc/doxygen.config
+
+install: 
+	@cd src && $(MAKE) install
+
+clean:
+	rm -f *~
+	@for dir in ${subdirs}; do \
+	  (cd $$dir && $(MAKE) clean) \
+	  || case "$(MFLAGS)" in *k*) fail=yes;; *) exit 1;; esac; \
+	done && test -z "$$fail"
+
+distclean: clean
+	rm -rf Makefile config.h config.status config.log autom4te.cache \
+	src/gui/ophcrack_win32.rc *~
+	@for dir in ${subdirs}; do \
+	  (cd $$dir && $(MAKE) distclean) \
+	  || case "$(MFLAGS)" in *k*) fail=yes;; *) exit 1;; esac; \
+	done && test -z "$$fail"
+
+dist: distclean
+	rm -rf $(distdir)
+	mkdir $(distdir)
+	cp -r $(DISTFILES) $(distdir)
+	for dir in `find ${distdir} -name .svn -type d`; do rm -rf $$dir; done
+	tar cfj $(distdir).tar.bz2 $(distdir)
+	rm -rf $(distdir)
+
+# automatic re-running of configure if the configure.in file has changed
+${srcdir}/configure: configure.in aclocal.m4
+	cd ${srcdir} && autoconf
+
+# autoheader might not change config.h.in, so touch a stamp file
+${srcdir}/config.h.in: stamp-h.in
+${srcdir}/stamp-h.in: configure.in aclocal.m4
+		cd ${srcdir} && autoheader
+		echo timestamp > ${srcdir}/stamp-h.in
+
+config.h: stamp-h
+stamp-h: config.h.in config.status
+	./config.status
+Makefile: Makefile.in config.status
+	./config.status
+config.status: configure
+	./config.status --recheck
