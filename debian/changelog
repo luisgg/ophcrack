@@ -1,3 +1,9 @@
+ophcrack (3.6.0-1~aurex1) precise; urgency=low
+
+  * Rebuild for aurex
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Fri, 06 Sep 2013 00:29:43 +0200
+
 ophcrack (3.6.0-1) unstable; urgency=low
 
   * New upstream release.
